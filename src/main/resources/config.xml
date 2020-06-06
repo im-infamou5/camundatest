@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean name="messageHandlerMethodFactory" class="org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory">
+        <property name="messageConverter">
+            <bean class="org.springframework.messaging.converter.ByteArrayMessageConverter"/>
+        </property>
+        <property name="validator">
+            <bean class="org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean"/>
+        </property>
+    </bean>
+    <bean name="asyncExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="8"/>
+        <property name="maxPoolSize" value="32"/>
+    </bean>
+    <!--suppress DuplicatedBeanNamesInspection -->
+    <bean name="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <list>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCache">
+                    <constructor-arg value="currency"/>
+                </bean>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCache">
+                    <constructor-arg value="pair"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <bean name="validatorFactory" class="org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean"/>
+    <bean name="messageConverter" class="org.springframework.messaging.converter.ByteArrayMessageConverter"/>
+</beans>
